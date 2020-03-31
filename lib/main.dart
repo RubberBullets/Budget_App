@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 
-import './widgets/transactionslist.dart';
-import './widgets/new_transaction.dart';
-
-
+import './widgets/user_transactions.dart';
 
 void main() => runApp(MyBudgetApp());
 
@@ -41,8 +38,7 @@ class HomePage extends StatelessWidget {
                   child: Text('hey hey'),
                 ),
               ),
-              NewTransaction(),
-              TransactionsList(),
+              UserTransactions(),
             ]),
       ),
     );
