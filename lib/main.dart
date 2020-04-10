@@ -10,6 +10,7 @@ void main() => runApp(MyBudgetApp());
 class MyBudgetApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    print('material app build');
     return MaterialApp(
       title: 'My Budget Planner',
       theme: ThemeData(
@@ -46,6 +47,7 @@ class HomePage extends StatefulWidget {
 
   @override
   _HomePageState createState() => _HomePageState();
+  
 }
 
 class _HomePageState extends State<HomePage> {
@@ -89,8 +91,44 @@ class _HomePageState extends State<HomePage> {
         });
   }
 
+  List<Widget> landscapeBuilder(MediaQueryData mQ,AppBar appBar,Widget txList){
+    return [ Row(     //shortened IF conditional for lists to show only one outcome or not
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text('Show Chart'),
+                  Switch(
+                    value: showChart,
+                    onChanged: (val) {
+                      setState(() {
+                        showChart = val;
+                      });
+                    },
+                  )
+                ],
+              ),
+              showChart
+                  ? Container(
+                      height: (mQ.size.height -
+                              appBar.preferredSize.height -
+                              mQ.padding.top) *
+                          0.7,
+                      child: Chart(recentTransactions))
+                  : txList ];
+  }
+
+  List<Widget> portraitBuilder(MediaQueryData mQ,AppBar appBar,Widget txList){
+    return [Container(
+                      height: (mQ.size.height -
+                              appBar.preferredSize.height -
+                              mQ.padding.top) *
+                          0.3,
+                      child: Chart(recentTransactions)),
+                      txList,];
+  }
+
   @override
   Widget build(BuildContext context) {
+    print('homepage state builded');
     final mQ = MediaQuery.of(context);
     final landscapeMode = mQ.orientation == Orientation.landscape;
     
@@ -156,38 +194,10 @@ class _HomePageState extends State<HomePage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              if (landscapeMode) Row(     //shortened IF conditional for lists to show only one outcome or not
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text('Show Chart'),
-                  Switch(
-                    value: showChart,
-                    onChanged: (val) {
-                      setState(() {
-                        showChart = val;
-                      });
-                    },
-                  )
-                ],
-              ),
-              if (!landscapeMode) Container(
-                      height: (mQ.size.height -
-                              appBar.preferredSize.height -
-                              mQ.padding.top) *
-                          0.3,
-                      child: Chart(recentTransactions)),
-
-              if (!landscapeMode) txList,
-
-              if (landscapeMode) showChart
-                  ? Container(
-                      height: (mQ.size.height -
-                              appBar.preferredSize.height -
-                              mQ.padding.top) *
-                          0.7,
-                      child: Chart(recentTransactions))
-                  : txList 
-            ]),
+              if (landscapeMode) ...landscapeBuilder(mQ,appBar,txList),
+              if (!landscapeMode) ...portraitBuilder(mQ,appBar,txList),
+            ],
+            ),
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).primaryColor,

@@ -5,17 +5,18 @@ class ChartBar extends StatelessWidget {
   final double spendingAmount;
   final double spendingPctOfTotal;
 
-  ChartBar({this.label, this.spendingAmount, this.spendingPctOfTotal});
+  const ChartBar({this.label, this.spendingAmount, this.spendingPctOfTotal});
 
   @override
   Widget build(BuildContext context) {
+    print('chart bars builded');
     return LayoutBuilder(builder: (context, constraints){
       return Column(
       children: <Widget>[
         Container(
           height: constraints.maxHeight*0.15,
           child: FittedBox(child: Text('\$${spendingAmount.toStringAsFixed(0)}',
-          style: TextStyle(
+          style: const TextStyle(
           color: Colors.white,
         ),))),
         SizedBox(
@@ -28,7 +29,7 @@ class ChartBar extends StatelessWidget {
             alignment: Alignment.bottomCenter,
             children: <Widget>[
               Container(
-                  decoration: BoxDecoration(
+                  decoration:  BoxDecoration(
                 border: Border.all(
                   color: Colors.grey,
                   width: 1.0,
@@ -57,7 +58,7 @@ class ChartBar extends StatelessWidget {
           height: constraints.maxHeight*0.15,
           child: FittedBox(
                     child: Text(label,
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.white,
             ),),
           ),
